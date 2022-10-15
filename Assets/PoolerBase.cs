@@ -11,6 +11,7 @@ using UnityEngine.Pool;
 public abstract class PoolerBase<T> : MonoBehaviour where T : MonoBehaviour 
 {
     private T _prefab;
+    public int totalSpawn;
     [SerializeField] private ObjectPool<T> _pool;
 
     private ObjectPool<T> Pool {
@@ -41,7 +42,12 @@ public abstract class PoolerBase<T> : MonoBehaviour where T : MonoBehaviour
     }
 
     #region Overrides
-    protected virtual T CreateSetup() => Instantiate(_prefab);
+    protected virtual T CreateSetup()
+    {
+        totalSpawn++;
+        return Instantiate(_prefab);
+    }
+
     protected virtual void GetSetup(T obj) => obj.gameObject.SetActive(true);
     protected virtual void ReleaseSetup(T obj) => obj.gameObject.SetActive(false);
     protected virtual void DestroySetup(T obj) => Destroy(obj);

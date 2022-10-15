@@ -1,8 +1,9 @@
 using UnityEngine;
 public class ShapeSpawner : PoolerBase<Shape> {
     [SerializeField] private Shape _shapePrefab;
-    [SerializeField] private int _spawnAmount = 20;
+    [SerializeField] private int _spawnAmount = 20, totalActive, totalInactive;
     
+
 
     private void Start() {
         InitPool(_shapePrefab); // Initialize the pool
@@ -30,5 +31,14 @@ public class ShapeSpawner : PoolerBase<Shape> {
     protected override void GetSetup(Shape shape) {
         base.GetSetup(shape);
         shape.transform.position = Vector3.zero;
+        totalActive++;
+        totalInactive--;
+    }
+
+    protected override void ReleaseSetup(Shape shape)
+    {
+        base.ReleaseSetup(shape);
+        totalActive--;
+        totalInactive++;
     }
 }
